@@ -3,6 +3,27 @@ const MODULE_ID = "eottrpg-utilities";
 
 let socket;
 
+// Quand un heal est appliqué, dnd5e appelle souvent healActor puis applyDamage.
+// On garde une fenêtre courte pour reconnaître ce cas.
+const _recentHeal = new Map(); // key: actor.uuid, value: timestamp ms
+const HEAL_WINDOW_MS = 500;
+
+function markRecentHeal(actor) {
+  if (!actor?.uuid) return;
+  _recentHeal.set(actor.uuid, Date.now());
+}
+
+function wasRecentlyHealed(actor) {
+  if (!actor?.uuid) return false;
+  const ts = _recentHeal.get(actor.uuid);
+  if (!ts) return false;
+  if (Date.now() - ts > HEAL_WINDOW_MS) {
+    _recentHeal.delete(actor.uuid);
+    return false;
+  }
+  return true;
+}
+
 function registerSocket() {
   socket = socketlib.registerModule(MODULE_ID);
   socket.register("triggerSequence", _handleSequence);
@@ -163,9 +184,36 @@ function _handleSequence({ actor, amount, isCritical }) {
 }
 
 Hooks.on("dnd5e.applyDamage", (actor, amount, properties) => {
+  // Si on vient de passer par healActor, on ignore cet applyDamage pour éviter:
+  // - double animation
+  // - confusion invertHealing
+  if (wasRecentlyHealed(actor)) return;
+
+  let finalAmount = amount;
+
+  // Nouveau système Midi: dégâts appliqués comme "healing inversé"
+  // => amount négatif MAIS c'est bien des dégâts
+  if (finalAmount < 0 && properties?.invertHealing === true) {
+    finalAmount = Math.abs(finalAmount); // force anim dégâts
+  }
+
   socket.executeAsGM("triggerSequence", {
-    actor:      actor,
-    amount,
+    actor,
+    amount: finalAmount,
     isCritical: properties?.midi?.isCritical || false
+  });
+});
+
+Hooks.on("dnd5e.healActor", (actor, amountData, updates, userId) => {
+  // amountData ressemble à { hp: X, temp: Y, total: Z }
+  const total = amountData?.total ?? amountData?.hp ?? 0;
+  if (!total) return;
+
+  markRecentHeal(actor);
+
+  socket.executeAsGM("triggerSequence", {
+    actor,
+    amount: -Math.abs(total), // dans ton code: négatif => anim heal
+    isCritical: false
   });
 });
