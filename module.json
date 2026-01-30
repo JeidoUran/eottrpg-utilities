@@ -18,7 +18,9 @@
                 "./scripts/codex-buttons.js",
                 "./scripts/token-rings.js",
                 "./scripts/union-gauge/main.js",
-                "./scripts/union-gauge/settings.js"],
+                "./scripts/union-gauge/settings.js",
+                "./scripts/clock/main.js",
+                "./scripts/clock/settings.js"],
   "styles": ["styles/union-gauge.css"],                
   "relationships": {
     "systems": [
