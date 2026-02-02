@@ -85,7 +85,7 @@ export class UnionGauge {
       gauge.style.position = "fixed";
       gauge.style.top = `${top}px`;
       gauge.style.left = `${left}px`;
-      gauge.style.zIndex = "9999";
+      gauge.style.zIndex = "21";
 
       showUnionGauge();
       return true;
