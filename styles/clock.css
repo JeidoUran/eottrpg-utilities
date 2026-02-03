@@ -1,0 +1,77 @@
+#eottrpg-halfclock-wrap {
+  position: fixed;
+  z-index: 9999;
+  width: var(--eottrpg-clock-size);
+  height: calc(var(--eottrpg-clock-size) / 2);
+  opacity: var(--eottrpg-clock-opacity);
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+/* Demi-cercle visible (ton flip validé) */
+#eottrpg-halfclock-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-top-left-radius: 999px;
+  border-top-right-radius: 999px;
+  transform: rotate(180deg);
+  transform-origin: center center;
+}
+
+/* Le disque complet qui tourne */
+#eottrpg-halfclock-rotor {
+  position: absolute;
+  inset: 0;
+  width: var(--eottrpg-clock-size);
+  height: var(--eottrpg-clock-size);
+  transform-origin: 50% 50%;
+}
+
+/* SVG composite (sectors) */
+#eottrpg-halfclock-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* frame au-dessus (ne tourne pas) */
+#eottrpg-halfclock-frame {
+  position: absolute;
+  inset: 0;
+  width: var(--eottrpg-clock-size);
+  height: var(--eottrpg-clock-size);
+  pointer-events: none;
+  z-index: 1;
+}
+
+#eottrpg-halfclock-hand {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: calc(var(--eottrpg-clock-size) * 0.52);
+  height: calc(var(--eottrpg-clock-size) / 2);
+  transform: translateX(-50%) rotate(90deg);
+  pointer-events: none;
+  z-index: 50;
+}
+
+#eottrpg-halfclock-hand-img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 22px;      /* épaisseur de l’aiguille */
+  width: 100%;
+  transform: translateY(-50%);
+  transform-origin: left center;
+}
+
+@media (max-width: 1200px) {
+  #eottrpg-halfclock-wrap {
+    opacity: 0.75;
+  }
+}
