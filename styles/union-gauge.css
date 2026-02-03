@@ -4,9 +4,9 @@
   --bar-animation-name: scroll;
   --border-width: 3px;
   --bar-percentage: 0%;
-  --star-background: url('../assets/img/seamless-energy-clouds.jpg');
-  --energy-background: url('../assets/img/energy.png');
-  --bubbles-background: url('../assets/img/bubbles.png');
+  --star-background: url('../assets/img/union-gauge/seamless-energy-clouds.jpg');
+  --energy-background: url('../assets/img/union-gauge/energy.png');
+  --bubbles-background: url('../assets/img/union-gauge/bubbles.png');
 }
 
 .meter-group.resource-bar .progress:before {
