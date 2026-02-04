@@ -154,7 +154,7 @@ function updateClockRotation() {
  *   chaque image est pré-rotatée pour être “à l’endroit” quand le secteur arrive à 6h (bas / sous l’aiguille)
  */
 function renderCompositeFaceSVG() {
-  const size = 300;            // espace arbitraire
+  const size = 600;            // espace arbitraire
   const center = size / 2;
   const radius = size / 2;
 
@@ -211,13 +211,15 @@ function renderCompositeFaceSVG() {
     img.setAttribute("href", `${timeBaseUrl}${SLICE_FILES[i]}`);
 
     // Taille image (tweakable)
-    const imgSize = 100;
+    const imgSize = 200;
     const offset = (size - imgSize) / 2;
 
     img.setAttribute("x", offset);
     img.setAttribute("y", offset);
     img.setAttribute("width", imgSize);
     img.setAttribute("height", imgSize);
+    img.setAttribute("image-rendering", "auto");
+    img.setAttribute("shape-rendering", "geometricPrecision");
 
     // “slice” = on crop pour remplir, comme Phil
     img.setAttribute("preserveAspectRatio", "xMidYMid slice");
