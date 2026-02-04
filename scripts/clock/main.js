@@ -80,13 +80,10 @@ function tryAttachClock() {
 
   if (document.getElementById("eottrpg-halfclock-wrap")) return true;
 
-  const size = game.settings.get(EOTTRPG_CLOCK_NS, "clockSize");
-  const opacity = game.settings.get(EOTTRPG_CLOCK_NS, "clockOpacity");
+  const uitop = document.getElementById("ui-top");
 
   const wrap = document.createElement("div");
   wrap.id = "eottrpg-halfclock-wrap";
-  wrap.style.setProperty("--eottrpg-clock-size", `${size}px`);
-  wrap.style.setProperty("--eottrpg-clock-opacity", `${opacity}`);
 
   wrap.innerHTML = `
     <div id="eottrpg-halfclock-clip">
@@ -100,7 +97,7 @@ function tryAttachClock() {
     </div>
   `;
 
-  document.body.appendChild(wrap);
+  uitop.appendChild(wrap);
 
   // Frame (ne tourne pas)
   wrap.querySelector("#eottrpg-halfclock-frame").src = dialFrameUrl;
@@ -119,16 +116,10 @@ function positionClockRelativeToBar(barEl) {
   const wrap = document.getElementById("eottrpg-halfclock-wrap");
   if (!wrap) return;
 
-  const x = game.settings.get(EOTTRPG_CLOCK_NS, "clockX");
-  const y = game.settings.get(EOTTRPG_CLOCK_NS, "clockY");
-  const size = game.settings.get(EOTTRPG_CLOCK_NS, "clockSize");
-
   const barRect = barEl.getBoundingClientRect();
-  const top = Math.round(barRect.bottom + y);
-  const left = Math.round(barRect.left + (barRect.width - size) / 2 + x);
+  const top = Math.round(barRect.bottom);
 
   wrap.style.top = `${top}px`;
-  wrap.style.left = `${left}px`;
 }
 
 function updateClockRotation() {
@@ -152,10 +143,8 @@ function updateClockRotation() {
   const progress = dayMinutes > 0 ? nowMinutes / dayMinutes : 0;
   const baseAngle = progress * 360;
 
-  const offset = Number(game.settings.get(EOTTRPG_CLOCK_NS, "clockOffsetDegrees")) || 0;
-
   // rotor tourne sous aiguille fixe
-  const final = (baseAngle + offset);
+  const final = (baseAngle);
   rotor.style.transform = `rotate(${final}deg)`;
 }
 
@@ -222,7 +211,7 @@ function renderCompositeFaceSVG() {
     img.setAttribute("href", `${timeBaseUrl}${SLICE_FILES[i]}`);
 
     // Taille image (tweakable)
-    const imgSize = 90;
+    const imgSize = 100;
     const offset = (size - imgSize) / 2;
 
     img.setAttribute("x", offset);

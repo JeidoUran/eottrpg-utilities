@@ -1,9 +1,12 @@
+:root {
+  --eottrpg-clock-size: 220px;
+}
+
 #eottrpg-halfclock-wrap {
   position: fixed;
-  z-index: 9999;
+  z-index: -1;
   width: var(--eottrpg-clock-size);
   height: calc(var(--eottrpg-clock-size) / 2);
-  opacity: var(--eottrpg-clock-opacity);
   pointer-events: none;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
 }
